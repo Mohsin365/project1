@@ -26,7 +26,11 @@ y = dataset.iloc[:,1].values
 
 # Imputer library...contains classes and methods for preprocessing
 
-from sklearn.preprocessing import Imputer 
+from sklearn.preprocessing import Imputer
+# updated ----- use
+# from sklearn.impute import SimpleImputer
+# imputer_train = SimpleImputer(missing_values = ..., strategy = ...)
+
 # make an object of Imputer...press Ctrl + i for info after Imputer
 imputer = Imputer(missing_values = "NaN",strategy = "mean",axis = 0)
 # fit imputer object to matrix X above
@@ -45,6 +49,23 @@ X = oneHotEncoder.fit_transform(X).toarray()
  # dependent vaiable Y ...no need to use Dummy var.
 labelEncoder_y = LabelEncoder()
 y = labelEncoder_y.fit_transform(y) ''' 
+
+# updated ---- use ColumnTransformer
+'''
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+columnTransformer = ColumnTransformer([('encoder', OneHotEncoder(), [1, 6])], remainder='passthrough')
+X_train = columnTransformer.fit_transform(X_train)
+
+# avoid dummy var. trap
+X_train = X_train[:,1:]
+
+#X_test = columnTransformer.fit_transform(X_test)
+columnTransformer_test = ColumnTransformer([('encoder', OneHotEncoder(), [1, 6])], remainder='passthrough')
+X_test = columnTransformer_test.fit_transform(X_test)
+X_test = X_test[:,1:]
+
+'''
 
 
 # spitting dataset into training set and test set
